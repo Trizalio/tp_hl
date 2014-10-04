@@ -2,6 +2,7 @@
 
 void createResponse(bufferevent *pBufferEvent)
 {
+    //std::cout << "conn_readcb callback " << std::this_thread::get_id() <<"\n";
     struct evbuffer* pInputBuffer = bufferevent_get_input(pBufferEvent);
     struct evbuffer* pOutputBuffer = bufferevent_get_output(pBufferEvent);
 
@@ -83,7 +84,7 @@ void createResponse(bufferevent *pBufferEvent)
         //std::cout << "Ok: method \"head\"\n";
         // ctime gives only /n so we'll add proper CRLF
         writeHeader(pOutputBuffer, STATUS_OK, getContentType(sRealPath), FileStats.st_size);
-        evbuffer_add(pOutputBuffer, CRLF, 2);
+        //evbuffer_add(pOutputBuffer, CRLF, 2);
     } else {
         writeHeader(pOutputBuffer, STATUS_BAD_REQUEST, TYPE_HTML, MASSAGE_LENGTH_BAD_REQUEST);
         evbuffer_add(pOutputBuffer, MASSAGE_BAD_REQUEST, MASSAGE_LENGTH_BAD_REQUEST);
