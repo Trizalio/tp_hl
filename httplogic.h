@@ -12,7 +12,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-enum Status {
+/*enum Status {
     OK = 200,
     FORBIDDEN = 403,
     NOT_FOUND = 404,
@@ -32,7 +32,7 @@ enum ContentType
     HTML = 0, CSS, JS,  JPG,
     JPEG,     PNG, GIF, SWF,
     OTHER,
-};
+};*/
 
 
 #define SERVER_NAME "myServer"
