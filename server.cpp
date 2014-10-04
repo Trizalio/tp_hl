@@ -95,7 +95,7 @@ void conn_eventcb(struct bufferevent *bev, short events, void *user_data)
 {
     //std::cout << "event callback\n";
     if (events & BEV_EVENT_ERROR)
-            std::cout << "Error from bufferevent";
+            //std::cout << "Error from bufferevent";
     if (events & (BEV_EVENT_EOF | BEV_EVENT_ERROR)) {
             bufferevent_free(bev);
     }
