@@ -9,13 +9,17 @@
 #include <event2/buffer.h>
 #include <cstring>
 
+#include <thread>
+#include <event2/thread.h>
+#include <boost/lockfree/queue.hpp>
+
 class CServer
 {
 public:
     CServer(unsigned int port);
     int start();
 private:
-
+    volatile bool isRun;
     struct event_base *base;
     struct evconnlistener *listener;
     struct sockaddr_in sin;

@@ -12,27 +12,8 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-enum Status {
-    OK = 200,
-    FORBIDDEN = 403,
-    NOT_FOUND = 404,
-    BAD_REQUEST = 405,
-};
 
-
-enum RequestMethod{
-    GET,
-    HEAD,
-    UNSUPPORTED,
-};
-
-
-enum ContentType
-{
-    HTML = 0, CSS, JS,  JPG,
-    JPEG,     PNG, GIF, SWF,
-    OTHER,
-};
+#include <thread>
 
 
 #define SERVER_NAME "myServer"
