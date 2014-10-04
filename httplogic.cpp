@@ -2,7 +2,6 @@
 
 void createResponse(bufferevent *pBufferEvent)
 {
-    //std::cout << "createResponse " << std::this_thread::get_id() <<"\n";
     struct evbuffer* pInputBuffer = bufferevent_get_input(pBufferEvent);
     struct evbuffer* pOutputBuffer = bufferevent_get_output(pBufferEvent);
 
@@ -92,6 +91,12 @@ void createResponse(bufferevent *pBufferEvent)
     return;
 }
 
+/*void writeBadRequest(evbuffer *pOutputBuffer)
+{
+    writeHeader(pOutputBuffer, STATUS_BAD_REQUEST, TYPE_HTML, 17);
+    evbuffer_add(pOutputBuffer, MASSAGE_BAD_REQUEST, MASSAGE_LENGTH_BAD_REQUEST);
+}*/
+
 const char* getContentType(const std::string& sPath)
 {
     int nDotPos = sPath.find_last_of('.');
@@ -115,6 +120,16 @@ const char* getContentType(const std::string& sPath)
     }
     return TYPE_UNKNOWN;
 }
+
+inline void getTime(char* time_buf)
+{
+    time_t rawtime;
+    struct tm * timeinfo;
+    time (&rawtime);
+    timeinfo = gmtime (&rawtime);
+
+    strftime (time_buf, 64, "%a, %d %b %G %T %Z", timeinfo);
+}
 void writeHeader(evbuffer *pOutputBuffer, const char* sStatus, const char* sType, int nLength)
 {
     char  Headers[]=    "HTTP/1.1 %s\r\n"
@@ -122,11 +137,18 @@ void writeHeader(evbuffer *pOutputBuffer, const char* sStatus, const char* sType
                         "Content-Length: %d\r\n"
                         "Server: %s\r\n"
                         "Connection: %s\r\n"
-                        "Date: %s\r\n";
+                        "Date: %s\r\n\r\n";
     const time_t timer = time(NULL);
     //std::cout << sStatus << "\n";
+
+    char time_buff[64];
+    getTime(time_buff);
+    /*evbuffer_add_printf(output, headers, statusMessgae(s), t,
+                        len, SERVER, time_buff, CONNECTION);*/
+    /*evbuffer_add_printf(pOutputBuffer, Headers, sStatus, sType,
+                        nLength, SERVER_NAME, HEADER_CONNECTION, ctime(&timer));*/
     evbuffer_add_printf(pOutputBuffer, Headers, sStatus, sType,
-                        nLength, SERVER_NAME, HEADER_CONNECTION, ctime(&timer));
+                        nLength, SERVER_NAME, HEADER_CONNECTION, time_buff);
 }
 
 bool validatePath(const std::string sPath)
